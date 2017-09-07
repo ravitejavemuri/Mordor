@@ -1,0 +1,337 @@
+<html>
+   <head>
+      <title>Intelligence Center</title>
+      <link rel = "stylesheet" type = "text/css"  href = "css/nav.css"  />
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="js/jquery.min.js"></script>
+      <script src="js/Chart.min.js"></script>
+      <script src="js/pie.js" ></script
+      <link rel="icon" href="logo.png" type="image/gif" sizes="16x16">
+      <link rel = "stylesheet" type = "text/css"  href = "css/bootstrap.css"  />
+      <style> 
+      input[type=text] {
+      width: 130px;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      background-color: white;
+      background-position: 10px 10px; 
+      background-repeat: no-repeat;
+      padding: 12px 20px 12px 40px;
+      -webkit-transition: width 0.4s ease-in-out;
+      transition: width 0.4s ease-in-out;
+      }
+      input[type=text]:focus {
+      width: 65%;
+      }
+      </style>
+   </head>
+   <body >
+   <div class=" container-fluid  ">
+   <div class="row">
+   <div class="col-sm-2 navbar-left ">
+   <img src="logo.png" class="center-block img-responsive">
+   <div class= "navbar"><!-- left nav -->
+   <h3 class="text-center nav-text well-sm "><b>Mordor</b> Intelligence</h3>
+   <div class="dropdown ">
+   <button type="button" class="btn btn-styl btn-pos btn-lg  dropdown-toggle" onclick="fill()" id="menu1"  data-toggle="dropdown">Segment</button>
+   <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+   <li  role="presentation"><a  id="d0" role="menuitem" tabindex="-1" onclick="filldat1()" ></a></li>
+   <li role="presentation"><a id="d1" role="menuitem" tabindex="-1" onclick="filldat2()" ></a></li>
+   <li role="presentation"><a id="d2" role="menuitem" tabindex="-1" onclick="filldat3()" ></a></li>
+   <li role="presentation"><a id="d3" role="menuitem" tabindex="-1" onclick="filldat4()" ></a></li>    
+   <li role="presentation"><a id="d4" role="menuitem" tabindex="-1" onclick="filldat5()" ></a></li>    
+   </ul>
+   </div>
+   <button type="button" class=" btn btn-styl  btn-lg " onclick="overview()"> Overview</button>
+   <button type="button" class=" btn  btn-styl  btn-lg" onclick="company()"> Company</button>
+   </div>
+   </div >
+   <div class="navbar-right rnav rcorners1 " id="dynamic">
+   <button type="button" class="  btn close   " id="x"> X</button>
+   <button type="button" class="   btn-rnav  btn-rpos  btn-lg " id="var1" onclick="subdata1()"> </button>
+   <button type="button" class="   btn-rnav   btn-lg " id="var2" onclick="subdata2()"> </button>
+   <button type="button" class="  btn-rnav   btn-lg " id="vit1" onclick="vitdata1()"> </button>
+   <button type="button" class="   btn-rnav   btn-lg " id="vit2" onclick="vitdata2()"> </button>
+   <button type="button" class="   btn-rnav   btn-lg " id="vit3" onclick="vitdata3()"> </button>
+   </div>
+   <form class="	">
+   <input type="text" name="search" placeholder="Search.."></br>
+   </form>
+   <div>
+   <select class="sel" >
+   <option value="Null">Country</option>
+   <option value="In">India</option>
+   <option value="Chi">China</option>
+   <option value="Jap">Japan</option>
+   <option value="Eur">Europe</option>
+   <option value="Can">Canada</option>
+   </select>	
+   <select class="sel1" >
+   <option value="Null">Year</option>
+   <option value="2017">2017</option>
+   <option value="2018">2018</option>
+   <option value="2019">2019</option>
+   <option value="2020">2020</option>
+   <option value="2021">2021</option>
+   </select>	
+   </div>
+   <div class="container-fluid">
+   <div class=" col-sm-4 center">
+   <div class="well-lg   ">
+   
+   <p id="fillbody" class="wel"></p>	
+ 
+   </div>
+   </div>
+   <div class=" col-sm-4 center  ">		
+   <div class="well-sm">
+   <canvas id="pie-chartcanvas-1" class="img-responsive"></canvas>
+   </div>
+   </div>
+   </div>
+   </div>	
+   </div>
+   </div>
+   
+  <!--<footer class="jumbotron foot">
+   <div class="">
+   <h6></h6>
+   </div>
+   </footer> -->
+   </body>
+   <script>
+      $("#dynamic").hide();
+	  $.getJSON("sample.json", function(json) {
+           input = JSON.stringify(json);
+			obj = JSON.parse(input);
+  	
+      
+      for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+           val = obj[key];
+          
+        }
+        
+      }
+      
+      for (var key in val) {
+        if (val.hasOwnProperty(key)) {
+           val1 = val[key];
+         
+        }
+      }
+      console.log(obj);
+           
+      
+      //json read
+      d2val= val.ProductType['Feed Vitamins']['title'];//vitamins
+      d3val= val.ProductType['Feed Minerals']['title'];//minarals
+      d4val= val.ProductType['Feed Amino Acids']['title'];//aminos
+      
+      // body,heads
+      vitb= val.ProductType['Feed Vitamins'].data.text['body'];
+      vitAhead = val.ProductType['Feed Vitamins'].segemtedTo['Vitamin A'].data.text.heading;
+      vitChead = val.ProductType['Feed Vitamins'].segemtedTo['Vitamin C'].data.text.heading;
+      vitKhead = val.ProductType['Feed Vitamins'].segemtedTo['Vitamin K'].data.text.heading;
+      
+      vitAbody=val.ProductType['Feed Vitamins'].segemtedTo['Vitamin A'].data.text.body;
+      vitCbody=val.ProductType['Feed Vitamins'].segemtedTo['Vitamin C'].data.text.body;
+      vitKbody=val.ProductType['Feed Vitamins'].segemtedTo['Vitamin K'].data.text.body;
+      
+      
+      FminB=val.ProductType['Feed Minerals'].data.text['body'];
+      
+      
+      FamB=val.ProductType['Feed Amino Acids'].data.text['body'];
+      
+      
+      
+      //graph data
+      fvitL=[];
+      fvitV=[];
+      vitAL=[];
+      vitAV=[];
+      vitCL=[];
+      vitCV=[];
+      vitKL=[];
+      vitKV=[];
+      FminL=[];
+      FminV=[];
+      FamL=[];
+      FamV=[];
+      
+      for(var i=0;i<=5;i++){
+      fvitL[i] =val.ProductType['Feed Vitamins']['data'].graph.datapoints[i].Year;
+      fvitV[i] =val.ProductType['Feed Vitamins'].data.graph.datapoints[i].Revenue;
+      vitAL[i]=val.ProductType['Feed Vitamins'].segemtedTo['Vitamin A']['data'].graph.datapoints[i].Year;
+      vitAV[i]=val.ProductType['Feed Vitamins'].segemtedTo['Vitamin A']['data'].graph.datapoints[i].Revenue;
+      vitCL[i]=val.ProductType['Feed Vitamins'].segemtedTo['Vitamin C']['data'].graph.datapoints[i].Year;
+      vitCV[i]=val.ProductType['Feed Vitamins'].segemtedTo['Vitamin C']['data'].graph.datapoints[i].Revenue;
+      vitKL[i]=val.ProductType['Feed Vitamins'].segemtedTo['Vitamin K']['data'].graph.datapoints[i].Year;
+      vitKV[i]=val.ProductType['Feed Vitamins'].segemtedTo['Vitamin K']['data'].graph.datapoints[i].Revenue;
+      FminL[i]=val.ProductType['Feed Minerals']['data'].graph.datapoints[i].Year;
+      FminV[i]=val.ProductType['Feed Minerals']['data'].graph.datapoints[i].Revenue;
+      FamL[i]=val.ProductType['Feed Amino Acids']['data'].graph.datapoints[i].Year;
+      FamV[i]=val.ProductType['Feed Amino Acids']['data'].graph.datapoints[i].Revenue;
+      }
+      fvitT=val.ProductType['Feed Vitamins'].data.graph.name;
+      vitAT=val.ProductType['Feed Vitamins'].segemtedTo['Vitamin A'].data.graph.name;
+      vitCT=val.ProductType['Feed Vitamins'].segemtedTo['Vitamin C'].data.graph.name;
+      vitKT=	val.ProductType['Feed Vitamins'].segemtedTo['Vitamin K'].data.graph.name;
+      
+      FminT=val.ProductType['Feed Minerals'].data.graph.name;
+      FamT=val.ProductType['Feed Amino Acids'].data.graph.name;
+      });
+      
+      
+      
+      
+      function fill()
+      {
+      
+      
+      
+      document.getElementById("d0").innerHTML = obj.title;//additivs
+      document.getElementById("d1").innerHTML = val1.Ruminant.title;//ruminant
+      document.getElementById("d2").innerHTML = d2val;//vitamins
+      document.getElementById("d3").innerHTML = d3val;//minarals
+      document.getElementById("d4").innerHTML = d4val;//aminos
+      
+      
+      
+      }
+      
+      $("#x").click(function(){
+          $("#dynamic").hide();
+      
+      });
+      
+      function filldat1()//additive data
+      {
+      	$("#dynamic").hide();
+      	$("#pie-chartcanvas-1").show();
+      	document.getElementById("fillbody").innerHTML = obj.data.text.body;
+      	
+      	
+      	addgraph();
+      	
+      
+      }
+      
+      function filldat2(){ //ruminant data
+      $("#dynamic").slideDown();
+      $("#var1").show();
+      $("#var2").show();
+      
+      
+      $("#vit1").hide();
+      $("#vit2").hide();
+      $("#vit3").hide();
+      $("#pie-chartcanvas-1").show();
+      
+      
+      document.getElementById("fillbody").innerHTML = val1.Ruminant.data.text.body;
+      
+      document.getElementById("var1").innerHTML = val1.Swine.title;
+      document.getElementById("var2").innerHTML = val1.poultry.title;
+      
+      rumgraph();
+      
+      
+      
+      }
+      
+      function subdata1(){//swine data
+      $("#pie-chartcanvas-1").show();
+      document.getElementById("fillbody").innerHTML = val1.Swine.data.text.body;
+      
+      swingraph();
+      
+      
+      }
+      
+      function subdata2(){//poultry data
+      $("#pie-chartcanvas-1").show();
+	  document.getElementById("fillbody").innerHTML = val1.poultry.data.text.body;
+      poulgraph();
+      }
+      
+      
+       
+      function filldat3(){ //vitamins
+      $("#dynamic").slideDown();
+      $("#vit1").show();
+      $("#vit2").show();
+      $("#vit3").show();
+      
+      $("#var1").hide();
+      $("#var2").hide();
+      
+      $("#pie-chartcanvas-1").show();
+      document.getElementById("fillbody").innerHTML = vitb;
+      
+      document.getElementById("vit1").innerHTML = vitAhead;
+      document.getElementById("vit2").innerHTML = vitChead
+      document.getElementById("vit3").innerHTML = vitKhead;
+      
+      fvitgraph();
+      
+      
+      
+      
+      }
+      
+      function vitdata1()
+      {
+      $("#pie-chartcanvas-1").show();
+      document.getElementById("fillbody").innerHTML = vitAbody;
+      vitAgraph();
+      }
+      
+      function vitdata2()
+      {
+	  $("#pie-chartcanvas-1").show();
+      document.getElementById("fillbody").innerHTML = vitCbody;
+      vitCgraph();
+      }
+      
+      function vitdata3()
+      {
+      $("#pie-chartcanvas-1").show();
+	  document.getElementById("fillbody").innerHTML = vitKbody;
+      vitKgraph();
+      }
+      
+      function filldat4()
+      {
+      $("#dynamic").hide();
+      $("#pie-chartcanvas-1").show();
+	  document.getElementById("fillbody").innerHTML = FminB;
+      Mingraph();
+      }
+      
+      function filldat5()
+      {
+      $("#dynamic").hide();
+      $("#pie-chartcanvas-1").show();
+	  document.getElementById("fillbody").innerHTML = FamB;
+      Aminograph();
+      }
+      
+      function overview()
+      {
+      $("#pie-chartcanvas-1").hide();
+      document.getElementById("fillbody").innerHTML = "<p>We are a fully bootstrapped company that grew from 2 to 250; we count a majority of the Fortune 100 among our clients. We have achieved all of this in 3 years. It doesn't matter how big we become, we are always a startup - never satisfied and hungry for growth.Our mission is to disrupt the market research industry using global intelligence networks and next-generation technology. We believe in flat organisation and autonomy.You will work on transformative platforms that revolutionize a trillion dollar industry. You will have the chance to innovate, execute, fail, iterate and succeed. Most importantly, you will have an opportunity to learn and be a part of something big.</p>";
+      
+      }
+      
+      function company()
+      {
+      $("#pie-chartcanvas-1").hide();
+      document.getElementById("fillbody").innerHTML = "<p>5th Floor, Brigade Towers,Financial District, Gachibowli,Hyderabad - 500032,India</p>";
+      }
+   </script>
+</html>
